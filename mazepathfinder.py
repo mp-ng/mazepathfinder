@@ -75,6 +75,7 @@ def search(maze, cost, start, end):
             return return_path(current_node,maze)
         # generate children from adjacent squares
         children = []
+        # loop through the four possible moves
         for move in moves:
             # get node position
             node_pos = (current_node.pos[0] + move[0], current_node.pos[1] + move[1])
@@ -130,10 +131,11 @@ maze2 =  [[0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
           [1,0,1,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0],
           [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0]]
 
+maze = maze2
 start = [0,0] # starting position
 end = [20,20] # ending position
 cost = 1 # cost per movement
 
-path = search(maze2, cost, start, end)
+path = search(maze, cost, start, end)
 
 print('\n'.join([''.join(["{:" ">3d}".format(item) for item in row]) for row in path]))
