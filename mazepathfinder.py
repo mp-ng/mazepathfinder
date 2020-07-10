@@ -6,8 +6,8 @@ class Node:
     def __init__(self, parent=None, position=None):
         self.parent = parent
         self.pos = position     
-        self.c = 0 #cost
-        self.h = 0 #heuristic
+        self.c = 0 #cost (each move = 1)
+        self.h = 0 #heuristic (Euclidean distance)
         self.t = self.c + self.h #total
         
     def __eq__(self, other):
@@ -32,7 +32,7 @@ def return_path(current_node, maze):
         start_value += 1
     return result
 
-def search(maze, start, end, cost):
+def search(maze, start, end):
     """
     1) First get the current node by comparing all total cost and selecting the lowest cost node for further expansion
     2) Remove the selected node from yet_to_visit list and add this node to visited list
@@ -94,7 +94,7 @@ def search(maze, start, end, cost):
             if len([visited_child for visited_child in visited_list if visited_child == child]) > 0:
                     continue
             # create cost
-            child.c = current_node.c + cost
+            child.c = current_node.c + 1
             # create heuristic using Euclidean distance
             child.h = (((child.pos[0] - end_node.pos[0]) ** 2) + ((child.pos[1] - end_node.pos[1]) ** 2)) ** 0.5
             # if child is in the yet_to_visit list and that cost is lower
@@ -103,13 +103,13 @@ def search(maze, start, end, cost):
             # add the child to the yet_to_visit list
             yet_to_visit_list.append(child)
 
-maze1 = [[0, 1, 0, 0, 0, 0],
-         [0, 0, 0, 0, 0, 0],
-         [0, 1, 0, 1, 0, 0],
-         [0, 1, 0, 0, 1, 0],
-         [0, 0, 0, 0, 1, 0]]
+maze1 = [[0, 0, 1, 0, 0, 0], #5x6
+         [0, 1, 1, 0, 1, 0],
+         [0, 0, 0, 0, 1, 0],
+         [0, 1, 0, 1, 1, 0],
+         [0, 1, 0, 1, 0, 0]]
 
-maze2 = [[0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+maze2 = [[0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], #21x21
          [0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
          [1, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1],
          [1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1],
@@ -131,11 +131,9 @@ maze2 = [[0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
          [1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0],
          [1, 1, 1, 1 ,1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0]]
 
-maze = maze2
 start = [0,0] # starting position
 end = [20,20] # ending position
-cost = 1 # cost per movement
 
-path = search(maze, start, end, cost)
+path = search(maze2, start, end)
 
 print('\n'.join([''.join(["{:" ">3d}".format(item) for item in row]) for row in path]))
