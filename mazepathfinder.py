@@ -1,5 +1,3 @@
-# Maze Path-Finder using A* Search
-
 import numpy as np
 
 class Node:
@@ -61,14 +59,12 @@ def search(maze, start, end):
     while len(yet_to_visit_list) > 0:
         # get the current node
         current_node = yet_to_visit_list[0]
-        current_index = 0
         # move to next node
         for index, node in enumerate(yet_to_visit_list):
             if node.t < current_node.t:
                 current_node = node
-                current_index = index
-        # pop current node out off yet_to_visit list, add to visited list
-        yet_to_visit_list.pop(current_index)
+        # remove current node from yet_to_visit list, add to visited list
+        yet_to_visit_list.remove(current_node)
         visited_list.append(current_node)
         # return path if goal reached
         if current_node == end_node:
@@ -131,9 +127,6 @@ maze2 = [[0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], #21x21
          [1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0],
          [1, 1, 1, 1 ,1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0]]
 
-start = [0,0] # starting position
-end = [20,20] # ending position
-
-path = search(maze2, start, end)
+path = search(maze=maze2, start=[0,0], end=[20,20])
 
 print('\n'.join([''.join(["{:" ">3d}".format(item) for item in row]) for row in path]))
